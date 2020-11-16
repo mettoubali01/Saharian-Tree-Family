@@ -1,11 +1,18 @@
 package model;
 
-public class Data {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "trees")
+public class Trees {
+
+    @Id
     private String name;
-    private String id;
 
-    public Data(String name) {
+    public Trees() {
+    }
+
+    public Trees(String name) {
         this.name = name;
     }
 
@@ -17,17 +24,10 @@ public class Data {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
-        return "Node{" +
-                "name='" + name + '}';
+        return "Trees{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

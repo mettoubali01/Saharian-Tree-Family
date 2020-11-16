@@ -15,14 +15,20 @@
             <artifactId>java.jdbc</artifactId>
             <version>0.7.11</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.22</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>6.0.0.Alpha6</version>
-            <type>pom</type>
         </dependency>
+
 
     </dependencies>
 
