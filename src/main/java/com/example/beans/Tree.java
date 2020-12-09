@@ -1,18 +1,19 @@
-package model;
+package com.example.beans;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "trees")
-public class Trees {
+@Table(name = "Tree")
+public class Tree {
 
     @Id
+    @Column(name = "name_id")
     private String name;
 
-    public Trees() {
+    public Tree() {
     }
 
-    public Trees(String name) {
+    public Tree(String name) {
         this.name = name;
     }
 
@@ -26,7 +27,7 @@ public class Trees {
 
     @Override
     public String toString() {
-        return "Trees{" +
+        return "Tres{" +
                 "name='" + name + '\'' +
                 '}';
     }
