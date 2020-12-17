@@ -1,0 +1,47 @@
+
+html{
+    display: grid;
+}
+.header_content{
+    justify-content: center;
+}
+.logo, .img-fluid{
+    display: block;
+    margin: 0 auto;
+}
+.logo{
+    height: 180px;
+}
+.img-fluid{
+    height: 90px;
+}
+
+.navbar{
+    background-color: #34495E;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.navbar .navbar-brand{
+    color: white;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding-right: 10px;
+    border-right: 3px white solid;
+}
+
+.navbar .nav-item .nav-link{
+    color: white;
+}
+
+#modalPassword .form-group{
+    margin: 15px;
+}
+
+#dropdownMenu1{
+    color: white;
+}
+/*
+.navbar .nav-item .nav-link:active{
+    display: none;
+}*/

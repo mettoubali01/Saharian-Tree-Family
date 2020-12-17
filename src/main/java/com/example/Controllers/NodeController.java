@@ -1,8 +1,8 @@
 package com.example.Controllers;
 
+import com.example.beans.User;
 import com.example.beans.Node;
-import com.example.beans.NodeDetails;
-import com.example.repository.INodeRepository;
+import com.example.service.UserService;
 import com.example.service.NodeDetailsService;
 import com.example.service.NodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +20,31 @@ public class NodeController {
     @Autowired
     NodeDetailsService nodeDetailsService;
 
-    @PostMapping("/Add")
-    public Node saveNodeAsRoot(@RequestBody Node node){
+    @Autowired
+    UserService userService;
+
+    @PostMapping("admin/{id}/node/add")
+    public Node saveNodeAsRoot(@RequestBody Node node, @PathVariable int id){
        // System.out.println(node.getParent() + " " + node.getNodeDetails());
+        User user = userService.searchAdminById(id);
+        node.setUser(user);
         nodeService.saveNode(node);
         return node;
     }
 
     @GetMapping("/node/children/{id}")
-    public List<Node> childrenNode(@PathVariable int id){
+    public List<Node> getChildrenNode(@PathVariable int id){
         Optional<Node> node = getNodeById(id);
 
         return node.get().getChilds();
     }
 
-    @PutMapping("/Node/{id}/AddChild")
-    public Node addNodeAsChild(@RequestBody Node node, @PathVariable int id){
+    @PutMapping("/admin/{userId}/Node/{id}/AddChild")
+    public Node addNodeAsChild(@RequestBody Node node, @PathVariable int id, @PathVariable int userId){
         Node parent = nodeService.getNodeById(id).get();
+        User user = userService.searchAdminById(userId);
         node.setParent(parent);
+        //node.setAdmin(admin);
         node.getNodeDetails().setNode(node);
         return nodeService.saveNode(node);
     }
@@ -49,7 +56,8 @@ public class NodeController {
 
     @GetMapping("/{id}")
     public Optional<Node> getNodeById(@PathVariable int id){
-
+        Node node = nodeService.getNodeById(id).get();
+        //System.out.println("EEEE" + node.getAdmin());
         return nodeService.getNodeById(id);
     }
 
@@ -59,6 +67,7 @@ public class NodeController {
     }
 
     @DeleteMapping("deleteNode/{id}")
+    @Transactional
     public String rmNodeById(@PathVariable int id) {
         Optional<Node> node = getNodeById(id);
         if (node.isPresent()) {
@@ -75,7 +84,10 @@ public class NodeController {
                 nodeService.deleteNodeById(id);
 
             }else{
+                System.out.println("Else ********************* Before " + id);
                 nodeService.deleteNodeById(id);
+                System.out.println("Else ********************* After " + id);
+
                 return "Has no childs " + node.get().getChilds().size();
             }
             return "Removed Successfully " + node.get().getChilds().size();

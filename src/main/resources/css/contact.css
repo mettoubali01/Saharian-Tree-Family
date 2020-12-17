@@ -1,0 +1,16 @@
+.container div.col-sm-9{
+    margin: auto;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    /*max-height: 50%;*/
+    height: -webkit-fill-available;
+}
+
+.contact__box .avatar{
+    display: flex;
+    margin: 15px auto;
+}

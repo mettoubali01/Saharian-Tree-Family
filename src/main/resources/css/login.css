@@ -1,0 +1,19 @@
+.container-fluid {
+    max-height: 50%;
+    height: -webkit-fill-available;
+}
+
+
+
+footer{
+    color: white;
+}
+
+
+/*
+
+position: fixed;
+top: 50%;
+left: 50%;
+!* bring your own prefixes *!
+transform: translate(-50%, -50%);*/

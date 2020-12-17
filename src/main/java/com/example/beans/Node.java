@@ -14,7 +14,7 @@ public class Node implements Serializable {
     private int id;
     @OneToOne
     private Tree tree;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "node_details_id")
     private NodeDetails nodeDetails;
 
@@ -27,6 +27,11 @@ public class Node implements Serializable {
     @JsonManagedReference
    // @JsonIgnoreProperties("childs")
     private List<Node> childs = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private boolean isRoot;
 
     public Node() {}
@@ -57,6 +62,14 @@ public class Node implements Serializable {
         this.nodeDetails = nodeDetails;
         this.parent = parent;
         this.childs = childs;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getId() {

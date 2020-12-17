@@ -1,0 +1,13 @@
+div.col-sm-9{
+    margin: 20px auto 50px auto ;
+}
+
+div.col-sm-9 .article__1, .article__2{
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+
+div.col-sm-9 #carouselSlidesOnly{
+    width: 60%;
+    margin: 0 auto;
+}
