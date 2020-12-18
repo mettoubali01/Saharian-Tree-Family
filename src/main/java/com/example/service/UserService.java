@@ -14,43 +14,43 @@ public class UserService implements IUserService {
     private IUserRepository iUserRepository;
 
     @Override
-    public User updateAdmin(User user) {
+    public User updateUser(User user) {
         return iUserRepository.save(user);
     }
 
     @Override
-    public User addAdmin(User user) {
+    public User addUser(User user) {
         return iUserRepository.save(user);
     }
 
     @Override
-    public List<User> getAdmins() {
+    public List<User> getUsers() {
         return iUserRepository.findAll();
     }
 
     @Override
-    public User searchAdminById(int id) {
+    public User searchUserById(int id) {
         System.out.println("EEEEEEEEEEEEEEEEEEEEEEE " + iUserRepository.findById(id).get());
         return iUserRepository.findById(id).get();
     }
 
     @Override
-    public User searchAdminByEmail(String email) {
-        return iUserRepository.findAdminByEmail(email);
+    public User searchUserByEmail(String email) {
+        return iUserRepository.findUserByEmail(email);
     }
 
     @Override
-    public void removeAdmin(User user) {
+    public void removeUser(User user) {
         iUserRepository.delete(user);
     }
 
     @Override
-    public void removeAdminByEmail(String email) {
-        iUserRepository.deleteAdminByEmail(email);
+    public void removeUserByEmail(String email) {
+        iUserRepository.deleteUserByEmail(email);
     }
 
     @Override
-    public void removeAdminById(int id) {
+    public void removeUserById(int id) {
         iUserRepository.deleteById(id);
     }
 }

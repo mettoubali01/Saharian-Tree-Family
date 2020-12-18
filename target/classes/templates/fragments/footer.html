@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <footer class="jumbotron" th:fragment="footer">
+            <div class="row">
+                <div class="col-sm-4 left__side">
+                    <h6>Ettoubali's Family Tree</h6>
+                    <p>This site is to maintain and keep the information of the Saharian tribes registered and saved for our next generations.</p>
+
+                    <a class="email-ic mr-3" role="button"><i class="far fa-lg fa-envelope"></i>  support@support.com</a>
+                    <br>
+                    <p>You can find us here:</p>
+                    <a class="fb-ic mr-3" role="button"><i class="fab fa-lg fa-facebook-f"></i></a>
+                    <a class="tw-ic mr-3" role="button"><i class="fab fa-lg fa-twitter"></i></a>
+                    <a class="ins-ic mr-3" role="button"><i class="fab fa-lg fa-instagram"></i></a>
+                </div>
+
+                <div class="col-sm-4 center__side">
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a>Terms and Conditions</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-sm-4">
+                    <h5>Contact Us</h5>
+                    <form>
+                        <div class="form-group">
+                            <label for="emailAddress" class="sr-only">Your email address</label>
+                            <input type="email" class="form-control" id="emailAddress" placeholder="Your email address">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Message" class="sr-only">Message</label>
+                            <textarea class="form-control rounded-0" id="message" rows="3" placeholder="Message..."></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary" style="background-color: olivedrab">Send</button>
+                    </form>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

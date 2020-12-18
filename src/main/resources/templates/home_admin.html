@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+    <head>
+        <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}"></script>
+        <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js}"></script>
+        <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+        <link rel="stylesheet" th:href="@{https://use.fontawesome.com/releases/v5.7.0/css/all.css}" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+        <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset="UTF-8">
+        <title th:text="${page_title}"></title>
+        <link th:href="@{css/header.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{css/foote.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{css/admin_index.css}" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <!--Header fragment-->
+        <div th:replace="fragments/header :: header"></div>
+
+        <div class="container-fluid">
+            <div class="btn__add_node d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" style="background-color: olivedrab">Add new node</button>
+            </div>
+
+            <div class="row content">
+                <div class="col-sm-7">
+                    <h4><small>RECENT POSTS</small></h4>
+                    <hr>
+                    <h2>I Love Food</h2>
+                    <h5><span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.</h5>
+                    <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
+                    <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor in  cididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <br><br>
+
+                    <h4><small>RECENT POSTS</small></h4>
+                    <hr>
+                    <h2>Officially Blogging</h2>
+                    <h5><span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.</h5>
+                    <h5><span class="label label-success">Lorem</span></h5><br>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <hr>
+                </div>
+
+                <div class="col-sm-3 sidenav jumbotron">
+                    <img th:src="@{images/profile_image.png}" class="img-circle" alt="profile image">
+                    <p class="info-title">Name: <span class="info-node">Muhammad Weld Fal</span></p>
+                    <p class="info-title">Surname: <span class="info-node">Weld Khatra Weld Bachir</span></p>
+                    <p class="info-title">Birth date: <span class="info-node">22/05/1901</span></p>
+                    <p class="info-title">Death date: <span class="info-node">Alive</span></p>
+                    <p class="info-title">Birth place: <span class="info-node">Labyar</span></p>
+                    <p class="info-title">Parent name: <span class="info-node">FAl wel Sboya</span></p>
+                    <p class="info-title">Description: <span class="info-node">----------------------------------------------------------------------------<br>------
+                    ----------------------------------------------------------------------------------------------------</span></p>
+
+                    <div class="btn__actions">
+                        <!--Update Node Button-->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpdateNodeForm" style="background-color: olivedrab">Update node info</button>
+
+                        <!-- Update Node Modal -->
+                        <div class="modal fade" id="modalUpdateNodeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateNodeModalLabel">Update Node Date</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="container-fluid add-node">
+
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="name" class="sr-only">Name</label>
+                                                <input type="text" class="form-control" id="name" placeholder="Name">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="surname" class="sr-only">Surname</label>
+                                                <input type="text" class="form-control" id="surname" placeholder="Surname">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="birthDate" class="sr-only">Birth Date</label>
+                                                <input type="date" class="form-control" id="birthDate">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="birthPlace" class="sr-only">Birth Place</label>
+                                                <input type="text" class="form-control" id="birthPlace" placeholder="Birth Place">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="deathDate" class="sr-only">Death Date</label>
+                                                <input type="date" class="form-control" id="deathDate">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="parent" class="sr-only">Parent</label>
+                                                <input type="text" class="form-control" id="parent" placeholder="Parent">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="description" class="sr-only">Description</label>
+                                                <textarea class="form-control rounded-0" id="description" rows="3" placeholder="..."></textarea>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                                        <button type="button" class="btn btn-primary">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Remove button-->
+                        <button type="button" class="btn btn-danger" data-target="#removeModal" data-toggle="modal">Remove Node</button>
+
+                        <!-- Remove Modal -->
+                        <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="removeModalLabel">Delete Warning</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure!! Do you want to remove the node and his children?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                                        <button type="button" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Footer fragment-->
+        <div th:replace="fragments/footer :: footer"></div>
+    </body>
+</html>

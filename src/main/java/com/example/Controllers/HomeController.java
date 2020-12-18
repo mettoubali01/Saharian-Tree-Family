@@ -6,13 +6,15 @@ import com.example.service.UserService;
 import com.example.service.NodeDetailsService;
 import com.example.service.NodeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController
-public class NodeController {
+@Controller
+public class HomeController {
 
     @Autowired
     NodeService nodeService;
@@ -23,13 +25,10 @@ public class NodeController {
     @Autowired
     UserService userService;
 
-    @PostMapping("admin/{id}/node/add")
-    public Node saveNodeAsRoot(@RequestBody Node node, @PathVariable int id){
-       // System.out.println(node.getParent() + " " + node.getNodeDetails());
-        User user = userService.searchAdminById(id);
-        node.setUser(user);
-        nodeService.saveNode(node);
-        return node;
+    @RequestMapping("/")
+    public String getHome(Model model){
+        model.addAttribute("page_title", "Home");
+        return "home";
     }
 
     @GetMapping("/node/children/{id}")
@@ -42,7 +41,7 @@ public class NodeController {
     @PutMapping("/admin/{userId}/Node/{id}/AddChild")
     public Node addNodeAsChild(@RequestBody Node node, @PathVariable int id, @PathVariable int userId){
         Node parent = nodeService.getNodeById(id).get();
-        User user = userService.searchAdminById(userId);
+        User user = userService.searchUserById(userId);
         node.setParent(parent);
         //node.setAdmin(admin);
         node.getNodeDetails().setNode(node);

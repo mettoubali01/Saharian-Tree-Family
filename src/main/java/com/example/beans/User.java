@@ -15,7 +15,9 @@ public class User {
     private String surname;
     private String email;
     private String password;
-    @ManyToMany(cascade = CascadeType.ALL)
+    private boolean isEnabled;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_fk", nullable = false),
@@ -65,14 +67,33 @@ public class User {
         this.password = password;
     }
 
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
-        return "Admin{" +
+        return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", isEnabled=" + isEnabled +
+                ", roles=" + roles +
                 '}';
     }
 }

@@ -1,9 +1,9 @@
 .container-fluid {
     max-height: 50%;
     height: -webkit-fill-available;
+    margin-top: 35px;
+    margin-bottom: 35px;
 }
-
-
 
 footer{
     color: white;

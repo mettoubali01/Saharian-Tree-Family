@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+    <head>
+
+    </head>
+    <body>
+        <header class="main-header" th:fragment="header">
+            <div class="header_content">
+                <img class="logo" th:src="@{/images/tree_logo.jfif}" alt="tree logo"/>
+                <img class="img-fluid" th:src="@{/images/family_tree_title.png}" alt="image_header">
+            </div>
+
+            <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black">
+                <a class="navbar-brand" href="#">Ettoubali's Family Tree</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav mr-auto">
+                        <li th:classappend="${page_title == 'Home' ? 'nav-item active' : 'nav-item'}">
+                            <a class="nav-link" th:href="@{/}">Home</a>
+                        </li>
+                        <li th:classappend="${page_title == 'History' ? 'nav-item active' : 'nav-item'}">
+                            <a class="nav-link" th:href="@{/history}">History</a>
+                        </li>
+                        <li th:classappend="${page_title == 'Contact' ? 'nav-item active' : 'nav-item'}">
+                            <a class="nav-link" th:href="@{/contact}">Contact</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav navbar-right" id="navbar__login">
+                        <li th:classappend="${page_title == 'Login' ? 'nav-item active' : 'nav-item'}">
+                            <a th:href="@{/login}"><span class="fas fa-sign-in-alt"></span> Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+    </body>
+</html>

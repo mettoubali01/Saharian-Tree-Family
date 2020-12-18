@@ -15,41 +15,41 @@ public class UserController {
 
     @PostMapping(value = "/admin/add")
     public User addAdmin(@RequestBody User user) {
-        return userService.addAdmin(user);
+        return userService.addUser(user);
     }
 
     @PutMapping(value = "/admin/update")
     public User updateAdmin(@RequestBody User user) {
-        return userService.updateAdmin(user);
+        return userService.updateUser(user);
     }
 
     @GetMapping(value = "/admin/{id}")
     public User searchAdminById(@PathVariable int id) {
-        return userService.searchAdminById(id);
+        return userService.searchUserById(id);
     }
 
-    @GetMapping(value = "/admin")
+    @GetMapping(value = "/adminn")
     public User searchAdminByEmail(@RequestParam String email) {
-        return userService.searchAdminByEmail(email);
+        return userService.searchUserByEmail(email);
     }
 
     @GetMapping(value = "/admins")
     public List<User> getAdmins() {
-        return userService.getAdmins();
+        return userService.getUsers();
     }
 
     @DeleteMapping(value = "admin/rm")
     public void removeAdminByEmail(@RequestBody User user) {
-        userService.removeAdmin(user);
+        userService.removeUser(user);
     }
 
     @DeleteMapping(value = "admin/remove/{id}")
     public void removeAdminById(@PathVariable int id) {
-         userService.removeAdminById(id);
+         userService.removeUserById(id);
     }
 
     @DeleteMapping(value = "admin/remove")
     public void removeAdminByEmail(@RequestParam String email) {
-        userService.removeAdminByEmail(email);
+        userService.removeUserByEmail(email);
     }
 }

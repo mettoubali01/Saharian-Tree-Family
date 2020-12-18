@@ -1,7 +1,6 @@
-
-html{
-    display: grid;
-}
+/*html{
+    display: grid;*/
+/*}*/
 .header_content{
     justify-content: center;
 }
@@ -15,7 +14,6 @@ html{
 .img-fluid{
     height: 90px;
 }
-
 .navbar{
     background-color: #34495E;
     padding-top: 2px;
@@ -30,18 +28,11 @@ html{
     border-right: 3px white solid;
 }
 
-.navbar .nav-item .nav-link{
-    color: white;
+#navbar__login li a{
+     color: lightgrey;
+    text-decoration: none;
 }
 
-#modalPassword .form-group{
-    margin: 15px;
-}
-
-#dropdownMenu1{
+#navbar__login li:active{
     color: white;
 }
-/*
-.navbar .nav-item .nav-link:active{
-    display: none;
-}*/
