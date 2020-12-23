@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface INodeDetailsRepository extends JpaRepository<NodeDetails, Integer> {
-    List<NodeDetails> findNodeDetailsByName(String name);
+    NodeDetails findNodeDetailsByName(String name);
     @Query("select p.name from Node_detail p where p.birthPlace = ?1")
     List<String> findNodeDetailsByBirthPlace(String birthPlace);
 }

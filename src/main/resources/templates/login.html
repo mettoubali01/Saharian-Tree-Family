@@ -24,14 +24,37 @@
                     <div class="my-4">
                         <h2>Admin, Fill your Data to access...|</h2>
                     </div>
+
+                    <!--<form  method="post" th:action="@{/login}">
+                        <h2 class="form-signin-heading">Please sign in</h2>
+                        <label for="email" class="sr-only">Username</label>
+                        <input type="text" id="email" name="username" class="form-control" placeholder="Email" required autofocus>
+                    </p>
+                    <p>
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                    </p>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                    </form>-->
+
+                    <br>
+                    <hr>
+
                     <form th:action="@{/login}" method="post">
+                        <div th:if="${param.error}">
+                            <div class="alert alert-danger">Invalid username or
+                                password.</div>
+                        </div>
+                        <div th:if="${param.logout}">
+                            <div class="alert alert-info">You have been logged out.</div>
+                        </div>
                         <div class="form-group">
-                            <label class="sr-only"  for="e-mail">Email</label>
-                            <input id="e-mail" class="form-control" type="email" placeholder="E-mail"/>
+                            <label class="sr-only" for="email">Username</label>
+                            <input id="email" name="username" class="form-control" type="text" placeholder="E-mail" value="mohamed@mohamed.com"/>
                         </div>
                         <div class="form-group">
                             <label class="sr-only" for="password">Password</label>
-                            <input id="password" class="form-control" type="password" placeholder="Password"/>
+                            <input id="password" name="password" class="form-control" type="password" placeholder="Password" value="qwe123"/>
                         </div>
                         <button type="submit" class="btn btn-primary" style="background-color: olivedrab">Sign in</button>
                     </form>

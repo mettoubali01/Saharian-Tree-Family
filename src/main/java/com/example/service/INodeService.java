@@ -12,5 +12,7 @@ public interface INodeService {
     void deleteNodeById(int id);
     Node updateNode(Node node);
     Optional<Node> getNodeById(int id);
+    Node getNodeByName(String name);
     List<Node> getAllNodes();
+    int countRootNodes();
 }

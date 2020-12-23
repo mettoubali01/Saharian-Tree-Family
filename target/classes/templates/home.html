@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org"
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th = "http://thymeleaf.org"
+
       xmlns:sec = "http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js}" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js}" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!--<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.10/css/jquery.orgchart.css}" src="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.10/css/jquery.orgchart.css"></script>-->
+        <script th:src="@{/js/orgchart.js}" src="/js/orgchart.js" type="text/javascript"></script>
+        <!--<script th:src="@{https://balkangraph.com/js/latest/OrgChart.js}"></script>-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" th:href="@{https://use.fontawesome.com/releases/v5.7.0/css/all.css}" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}">
         <link th:href="@{/css/header.css}" href="/css/header.css" rel="stylesheet" type="text/css"/>
@@ -19,39 +25,187 @@
         <div th:replace="fragments/header :: header"></div>
         <div class="container-fluid">
             <div class="row content">
-                <div class="col-sm-7">
-                    <h4><small>RECENT POSTS</small></h4>
-                    <hr>
-                    <h2>I Love Food</h2>
-                    <h5><span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.</h5>
-                    <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
-                    <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor in  cididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <br><br>
-
-                    <h4><small>RECENT POSTS</small></h4>
-                    <hr>
-                    <h2>Officially Blogging</h2>
-                    <h5><span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.</h5>
-                    <h5><span class="label label-success">Lorem</span></h5><br>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <hr>
+                <!--sec:authorize="hasAnyAuthority('ADMIN')-->
+                <div class="jumbotron col-sm-2 sidenav" id="sidenava">
+                    <fieldset>
+                        <legend>Add new Member</legend>
+                        <form th:action="@{/new-member}" method="post">
+                            <div th:if="${param.error}">
+                                <div class="alert alert-danger">
+                                  Error.</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="name">Name</label>
+                                <input id="name" name="name" class="form-control" type="text" placeholder="Name"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="surname">Surname</label>
+                                <input id="surname" name="surname" class="form-control" type="text" placeholder="Surname"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="birthDate">Birth Date</label>
+                                <input id="birthDate" name="birthDate" class="form-control" type="date" value=""/>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="birthPlace">Birth Place</label>
+                                <input id="birthPlace" name="birthPlace" class="form-control" type="text" placeholder="Place Birth"/>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="isDead" id="dead" value="true">
+                                <label class="form-check-label" for="dead">
+                                    Dead
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="isDead" id="alive" value="false" checked>
+                                <label class="form-check-label" for="alive">
+                                    Alive
+                                </label>
+                            </div>
+                            <!--<div class="form-group">
+                                <label class="sr-only" for="deathDate">Death Date</label>
+                                <input id="deathDate" name="death date" class="form-control" type="date"/>
+                            </div>-->
+                            <div class="form-group">
+                                <label for="parentName" class="sr-only">Parent</label>
+                                <select id="parentName" name="parentName" class="form-control">
+                                    <option selected>Choose Parent</option>
+                                    <option th:each="node : ${nodes}"
+                                            th:value="${node.nodeDetails.name}"
+                                            th:text="${node.nodeDetails.name}"></option>
+                                </select>
+                            </div>
+                            <div  th:if="${counted_root_node == 0 }" class="form-group">
+                                <label for="isRoot" class="sr-only">Is Root</label>
+                                <select id="isRoot" name="isRoot" class="form-control">
+                                    <option selected>Choose Parent</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="description">description</label>
+                                <textarea id="description" name="description" class="form-control" placeholder="description" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </form>
+                    </fieldset>
                 </div>
+                <!--col-sm-7-->
+                <!--col-sm-12 d-flex justify-content-center-->
+                <div sec:authorize="isAnonymous()" class="col-sm-12 d-flex justify-content-center" id="container-tree">
+                    <div id="tree"></div>
+                </div>
+                <div sec:authorize="isAuthenticated()" class="col-sm-7 justify-content-center" id="container-treee">
+                    <div id="treee"></div>
+                </div>
+                <div class="jumbotron col-sm-2 sidenav" id="sidenav">
 
-                <div class="jumbotron col-sm-2 sidenav">
                     <img th:src="@{/images/profile_image.png}" class="img-circle" alt="profile image">
-                    <p class="info-title">Name: <span class="info-node">Muhammad Weld Fal</span></p>
-                    <p class="info-title">Surname: <span class="info-node">Weld Khatra Weld Bachir</span></p>
-                    <p class="info-title">Birth date: <span class="info-node">22/05/1901</span></p>
-                    <p class="info-title">Death date: <span class="info-node">Alive</span></p>
-                    <p class="info-title">Birth place: <span class="info-node">Labyar</span></p>
-                    <p class="info-title">Parent name: <span class="info-node">FAl wel Sboya</span></p>
-                    <p class="info-tit  le">Description: <span class="info-node">----------------------------------------------------------------------------<br>
-                        ----------------------------------------------------------------------------------------------------</span></p>
+                    <p class="info-title">Name: <span class="info-node node-name"></span></p>
+                    <p class="info-title">Surname: <span class="info-node node-surname"></span></p>
+                    <p class="info-title">Birth date: <span class="info-node node-birth-date"></span></p>
+                    <p class="info-title">Death date: <span class="info-node node-death-date"></span></p>
+                    <p class="info-title">Birth place: <span class="info-node node-birth-place"></span></p>
+                    <p class="info-title">Parent name: <span class="info-node node-parent-name"></span></p>
+                    <p class="info-title">Description: <span class="info-node node-description"></span></p>
+                    <button type="button" class="btn btn-primary" style="background-color: olivedrab" id="btn_close">
+                        Hide the member information
+                    </button>
+                    <div class="btn__actions">
+                        <!--Update Node Button-->
+                        <button sec:authorize="hasAnyAuthority('ADMIN')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpdateNodeForm" style="background-color: olivedrab">Update node info</button>
+
+                        <!-- Update Node Modal -->
+                        <div class="modal fade" id="modalUpdateNodeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateNodeModalLabel">Update Node Date</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="container-fluid add-node">
+
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="name__for__update" class="sr-only">Name</label>
+                                                <input type="text" class="form-control" id="name__for__update" placeholder="Name">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="surname__for__update" class="sr-only">Surname</label>
+                                                <input type="text" class="form-control" id="surname__for__update" placeholder="Surname">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="birthDate__for__update" class="sr-only">Birth Date</label>
+                                                <input type="date" class="form-control" id="birthDate__for__update">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="birthPlace__for__update" class="sr-only">Birth Place</label>
+                                                <input type="text" class="form-control" id="birthPlace__for__update" placeholder="Birth Place">
+                                            </div>
+
+                                            <!--<div class="form-group">
+                                                <label for="deathDate" class="sr-only">Death Date</label>
+                                                <input type="date" class="form-control" id="deathDate">
+                                            </div>-->
+
+                                            <div class="form-group">
+                                                <label for="parent" class="sr-only">Parent</label>
+                                                <input type="text" class="form-control" id="parent" placeholder="Parent">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="description__for__update" class="sr-only">Description</label>
+                                                <textarea class="form-control rounded-0" id="description__for__update" rows="3" placeholder="..."></textarea>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                                        <button type="button" class="btn btn-primary">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Remove button-->
+                        <button sec:authorize="hasAnyAuthority('ADMIN')" type="button" class="btn btn-danger" data-target="#removeModal" data-toggle="modal">Remove Node</button>
+
+                        <!-- Remove Modal -->
+                        <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="removeModalLabel">Delete Warning</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure!! Do you want to remove the node and his children?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                                        <button type="button" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!--Footer fragment-->
             <div th:replace="fragments/footer :: footer"></div>
         </div>
+
+        <script th:src="@{/js/tree.js}" src="/js/tree.js" type="text/javascript"></script>
     </body>
 </html>

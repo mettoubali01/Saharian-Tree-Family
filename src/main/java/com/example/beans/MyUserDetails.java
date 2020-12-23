@@ -59,4 +59,19 @@ public class MyUserDetails implements UserDetails {
     public boolean isEnabled() {
         return user.isEnabled();
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "MyUserDetails{" +
+                "user=" + user +
+                '}';
+    }
 }

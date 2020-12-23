@@ -10,10 +10,9 @@ import java.util.Set;
 public class User {
     @Id
     @Column(name = "user_id")
-    private int id;
+    private String email;
     private String name;
     private String surname;
-    private String email;
     private String password;
     private boolean isEnabled;
 
@@ -26,14 +25,6 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public User() {}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -84,13 +75,13 @@ public class User {
         this.roles = roles;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "email=" + email +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", isEnabled=" + isEnabled +
                 ", roles=" + roles +

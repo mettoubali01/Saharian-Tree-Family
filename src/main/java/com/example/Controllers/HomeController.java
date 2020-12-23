@@ -1,16 +1,26 @@
 package com.example.Controllers;
 
+import com.example.beans.NodeDetails;
+import com.example.beans.Tree;
 import com.example.beans.User;
 import com.example.beans.Node;
+import com.example.dto.NodeDetailsDto;
+import com.example.dto.ParentDto;
+import com.example.service.TreeService;
 import com.example.service.UserService;
 import com.example.service.NodeDetailsService;
 import com.example.service.NodeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -20,14 +30,53 @@ public class HomeController {
     NodeService nodeService;
 
     @Autowired
+    TreeService treeService;
+
+    @Autowired
     NodeDetailsService nodeDetailsService;
 
     @Autowired
     UserService userService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @RequestMapping("/")
-    public String getHome(Model model){
+    public String getHome(Model model, Principal principal){
+        System.out.println("Hola: " + nodeService.getAllNodes());
+        model.addAttribute("nodes", nodeService.getAllNodes());
         model.addAttribute("page_title", "Home");
+        model.addAttribute("counted_root_node",nodeService.countRootNodes());
+        return "home";
+    }
+
+    @PostMapping("/new-member")
+    public String addNewMember(@Valid NodeDetailsDto nodeDetailsDto, @Valid ParentDto parentDto, BindingResult bindingResult, Model model){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.searchUserByEmail("mohamed@mohamed.com");
+        Tree tree = treeService.getTreeByName("Ettoubali");
+
+        // related with the parent
+        System.out.println("Parent " + parentDto.getParentName() + " = " + nodeService.getNodeByName(parentDto.getParentName()));
+        Node parent = nodeService.getNodeByName(parentDto.getParentName());
+
+        //related with details of the node
+        NodeDetails nodeDetails = modelMapper.map(nodeDetailsDto, NodeDetails.class);
+        //System.out.println(nodeDetails);
+        //nodeDetailsService.addNodeDetails(nodeDetails);
+
+        Node node = new Node();
+        node.setNodeDetails(nodeDetails);
+        node.setUser(user);
+        node.setTree(tree);
+        node.setRoot(false);
+        //nodeService.saveNode(node);
+        node.setParent(parent);
+        nodeService.saveNode(node);
+
+        if (bindingResult.hasErrors()) {
+            System.out.println("Errores del form " + bindingResult.getFieldErrors());
+        }
         return "home";
     }
 
@@ -38,7 +87,7 @@ public class HomeController {
         return node.get().getChilds();
     }
 
-    @PutMapping("/admin/{userId}/Node/{id}/AddChild")
+    @PutMapping("/;'p")
     public Node addNodeAsChild(@RequestBody Node node, @PathVariable int id, @PathVariable int userId){
         Node parent = nodeService.getNodeById(id).get();
         User user = userService.searchUserById(userId);
@@ -54,6 +103,7 @@ public class HomeController {
     }
 
     @GetMapping("/{id}")
+    @ResponseBody
     public Optional<Node> getNodeById(@PathVariable int id){
         Node node = nodeService.getNodeById(id).get();
         //System.out.println("EEEE" + node.getAdmin());
@@ -61,8 +111,9 @@ public class HomeController {
     }
 
     @GetMapping("/nodes")
-    public List<Node> getNodes() {
-        return nodeService.getAllNodes();
+    @ResponseBody
+    public Node getNodes() {
+        return nodeService.getAllNodes().get(0);
     }
 
     @DeleteMapping("deleteNode/{id}")

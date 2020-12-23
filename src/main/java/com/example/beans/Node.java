@@ -5,6 +5,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
+
 @Entity
 @Table(name = "Node")
 public class Node implements Serializable {
@@ -14,17 +18,19 @@ public class Node implements Serializable {
     private int id;
     @OneToOne
     private Tree tree;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    /*CascadeType.ALL*/
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "node_details_id")
     private NodeDetails nodeDetails;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    @JsonBackReference
+    //@JsonBackReference
+    @JsonIdentityReference(alwaysAsId = true)
     private Node parent;
-
-    @OneToMany(mappedBy = "parent" ,cascade ={ CascadeType.PERSIST, CascadeType.REMOVE})
-    @JsonManagedReference
+    /*CascadeType.PERSIST, CascadeType.REMOVE*/
+    @OneToMany(mappedBy = "parent" ,cascade ={CascadeType.PERSIST, CascadeType.REMOVE})
+    //@JsonManagedReference
    // @JsonIgnoreProperties("childs")
     private List<Node> childs = new ArrayList<>();
 
@@ -36,7 +42,7 @@ public class Node implements Serializable {
 
     public Node() {}
 
-    public Node(NodeDetails nodeDetails, boolean isRoot) {
+    /*public Node(NodeDetails nodeDetails, boolean isRoot) {
         this.nodeDetails = nodeDetails;
         this.isRoot = isRoot;
     }
@@ -62,7 +68,7 @@ public class Node implements Serializable {
         this.nodeDetails = nodeDetails;
         this.parent = parent;
         this.childs = childs;
-    }
+    }*/
 
     public User getUser() {
         return user;
@@ -120,5 +126,15 @@ public class Node implements Serializable {
         isRoot = root;
     }
 
-
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id=" + id +
+                ", tree=" + tree +
+                ", nodeDetails=" + nodeDetails +
+                ", parent=" + parent +
+                ", user=" + user +
+                ", isRoot=" + isRoot +
+                '}';
+    }
 }

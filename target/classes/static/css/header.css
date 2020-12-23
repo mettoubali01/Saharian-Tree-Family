@@ -31,8 +31,24 @@
 #navbar__login li a{
      color: lightgrey;
     text-decoration: none;
+    font-size: larger;
 }
 
 #navbar__login li:active{
     color: white;
+}
+#navbar__login{
+    align-items: baseline;
+}
+
+.admin_name{
+    margin-right: 5px;
+}
+
+#navbardrop{
+    text-decoration: none;
+    animation: none;
+}
+.dropdown-menu{
+    color: #34495E;
 }

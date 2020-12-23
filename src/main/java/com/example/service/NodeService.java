@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 public class NodeService implements INodeService{
@@ -59,8 +58,24 @@ public class NodeService implements INodeService{
     }
 
     @Override
+    public Node getNodeByName(String name) {
+        List<Node> nodes = iNodeRepository.findAll();
+        Node obj = null;
+        for (Node node: nodes)
+            if (node.getNodeDetails().getName().equals(name))
+                obj = node;
+
+        return obj;
+    }
+
+    @Override
     public List<Node> getAllNodes() {
         return iNodeRepository.findAll();
+    }
+
+    @Override
+    public int countRootNodes() {
+        return iNodeRepository.countRootNodes();
     }
 
     public ArrayList<Integer> getIds(int id){

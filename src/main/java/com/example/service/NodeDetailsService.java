@@ -31,7 +31,7 @@ public class NodeDetailsService implements INodeDetailsService {
     }
 
     @Override
-    public List<NodeDetails> getNodeDetailsbyName(String name) {
+    public NodeDetails getNodeDetailsbyName(String name) {
         return iNodeDetailsRepository.findNodeDetailsByName(name);
     }
 

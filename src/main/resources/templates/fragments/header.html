@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<html lang="en" xmlns:th = "http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head>
 
     </head>
@@ -16,7 +16,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarText">
-                    <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav w-100">
                         <li th:classappend="${page_title == 'Home' ? 'nav-item active' : 'nav-item'}">
                             <a class="nav-link" th:href="@{/}">Home</a>
                         </li>
@@ -26,10 +26,21 @@
                         <li th:classappend="${page_title == 'Contact' ? 'nav-item active' : 'nav-item'}">
                             <a class="nav-link" th:href="@{/contact}">Contact</a>
                         </li>
-                    </ul>
-                    <ul class="navbar-nav navbar-right" id="navbar__login">
-                        <li th:classappend="${page_title == 'Login' ? 'nav-item active' : 'nav-item'}">
-                            <a th:href="@{/login}"><span class="fas fa-sign-in-alt"></span> Login</a>
+                        <li class="nav-item dropdown ml-auto">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                <span class="fas fa-cogs"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                                <form th:action="@{/logout}" method="post">
+                                    <button type="submit" class="btn btn-dark btn-block" sec:authorize="isAuthenticated()" th:href="@{/logout}"><span class="fas fa-sign-out-alt" aria-hidden="true"> Logout</span></button>
+                                </form>
+                                <a class="btn btn-dark btn-block" sec:authorize="isAnonymous()" th:href="@{/login}"><span class="fas fa-sign-in-alt"></span> Sign in</a>
+                                <div sec:authorize="isAuthenticated()">
+                                    <a  sec:authentication="principal.authorities">Roles</a>
+                                    <br></br>Hi, <a  sec:authentication="name">Username</a>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
