@@ -1,6 +1,9 @@
+html, body {
+    height: 100%;
+}
+
 .container-fluid {
-    max-height: 50%;
-    height: -webkit-fill-available;
+    min-height: 50%;
     margin-top: 35px;
     margin-bottom: 35px;
 }
@@ -8,12 +11,3 @@
 footer{
     color: white;
 }
-
-
-/*
-
-position: fixed;
-top: 50%;
-left: 50%;
-!* bring your own prefixes *!
-transform: translate(-50%, -50%);*/

@@ -2,15 +2,12 @@
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th = "http://thymeleaf.org"
-
       xmlns:sec = "http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js}" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js}" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <!--<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.10/css/jquery.orgchart.css}" src="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.10/css/jquery.orgchart.css"></script>-->
         <script th:src="@{/js/orgchart.js}" src="/js/orgchart.js" type="text/javascript"></script>
-        <!--<script th:src="@{https://balkangraph.com/js/latest/OrgChart.js}"></script>-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" th:href="@{https://use.fontawesome.com/releases/v5.7.0/css/all.css}" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}">
         <link th:href="@{/css/header.css}" href="/css/header.css" rel="stylesheet" type="text/css"/>
@@ -23,50 +20,27 @@
     <body>
         <!--Header fragment-->
         <div th:replace="fragments/header :: header"></div>
+
         <div class="container-fluid">
             <div class="row content">
-                <!--sec:authorize="hasAnyAuthority('ADMIN')-->
-                <div class="jumbotron col-sm-2 sidenav" id="sidenava">
+                <div sec:authorize="hasAnyAuthority('ADMIN')" class="jumbotron col-sm-2 sidenav" id="sidenava">
                     <fieldset>
                         <legend>Add new Member</legend>
-                        <form th:action="@{/new-member}" method="post">
+                        <form action="#" th:action="@{/addMember}" method="post">
                             <div th:if="${param.error}">
                                 <div class="alert alert-danger">
                                   Error.</div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="name">Name</label>
-                                <input id="name" name="name" class="form-control" type="text" placeholder="Name"/>
+                                <label for="name">Name</label>
+                                <input id="name" name="name" class="form-control" type="text" placeholder="Bachir"/>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="surname">Surname</label>
-                                <input id="surname" name="surname" class="form-control" type="text" placeholder="Surname"/>
+                                <label for="surname">Surname</label>
+                                <input id="surname" name="surname" class="form-control" type="text" placeholder="Ettoubali"/>
                             </div>
-                            <div class="form-group">
-                                <label class="sr-only" for="birthDate">Birth Date</label>
-                                <input id="birthDate" name="birthDate" class="form-control" type="date" value=""/>
-                            </div>
-                            <div class="form-group">
-                                <label class="sr-only" for="birthPlace">Birth Place</label>
-                                <input id="birthPlace" name="birthPlace" class="form-control" type="text" placeholder="Place Birth"/>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="isDead" id="dead" value="true">
-                                <label class="form-check-label" for="dead">
-                                    Dead
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="isDead" id="alive" value="false" checked>
-                                <label class="form-check-label" for="alive">
-                                    Alive
-                                </label>
-                            </div>
-                            <!--<div class="form-group">
-                                <label class="sr-only" for="deathDate">Death Date</label>
-                                <input id="deathDate" name="death date" class="form-control" type="date"/>
-                            </div>-->
-                            <div class="form-group">
+
+                            <div th:if="${nodes!=null and !nodes.empty}" class="form-group">
                                 <label for="parentName" class="sr-only">Parent</label>
                                 <select id="parentName" name="parentName" class="form-control">
                                     <option selected>Choose Parent</option>
@@ -75,109 +49,159 @@
                                             th:text="${node.nodeDetails.name}"></option>
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="birthPlace">Birth Place</label>
+                                <input id="birthPlace" name="birthPlace" class="form-control" type="text" placeholder="Layun"/>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="birthDate">Birth Date</label>
+                                <input id="birthDate" name="birthDate" class="form-control" type="date" value=""/>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="isDead" id="dead" value="true">
+                                    <label class="form-check-label" for="dead">
+                                        Dead
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="isDead" id="alive" value="false" checked>
+                                    <label class="form-check-label" for="alive">
+                                        Alive
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group deadDate_section">
+                                <label for="deadDate">Death Date</label>
+                                <input id="deadDate" name="deadDate" class="form-control" type="date"/>
+                            </div>
+
                             <div  th:if="${counted_root_node == 0 }" class="form-group">
-                                <label for="isRoot" class="sr-only">Is Root</label>
-                                <select id="isRoot" name="isRoot" class="form-control">
-                                    <option selected>Choose Parent</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                </select>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="isRoot" id="isRoot" value="true" checked>
+                                    <label class="form-check-label" for="IsRoot">
+                                        Root
+                                    </label>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="description">description</label>
-                                <textarea id="description" name="description" class="form-control" placeholder="description" rows="3"></textarea>
+                                <label for="description">Description</label>
+                                <textarea id="description" name="description" class="form-control" placeholder="......" rows="3"></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Add</button>
                         </form>
                     </fieldset>
                 </div>
-                <!--col-sm-7-->
-                <!--col-sm-12 d-flex justify-content-center-->
                 <div sec:authorize="isAnonymous()" class="col-sm-12 d-flex justify-content-center" id="container-tree">
                     <div id="tree"></div>
                 </div>
-                <div sec:authorize="isAuthenticated()" class="col-sm-7 justify-content-center" id="container-treee">
+                <div sec:authorize="isAuthenticated()" class="col-sm-9 justify-content-center" id="container-treee">
                     <div id="treee"></div>
                 </div>
                 <div class="jumbotron col-sm-2 sidenav" id="sidenav">
 
-                    <img th:src="@{/images/profile_image.png}" class="img-circle" alt="profile image">
+                    <img th:src="@{/images/profile_image.png}" class="img-circle" alt="profile image"/>
                     <p class="info-title">Name: <span class="info-node node-name"></span></p>
                     <p class="info-title">Surname: <span class="info-node node-surname"></span></p>
-                    <p class="info-title">Birth date: <span class="info-node node-birth-date"></span></p>
-                    <p class="info-title">Death date: <span class="info-node node-death-date"></span></p>
-                    <p class="info-title">Birth place: <span class="info-node node-birth-place"></span></p>
                     <p class="info-title">Parent name: <span class="info-node node-parent-name"></span></p>
+                    <p class="info-title">Birth date: <span class="info-node node-birth-date"></span></p>
+                    <p class="info-title">Birth place: <span class="info-node node-birth-place"></span></p>
+                    <p class="info-title">Alive: <span class="info-node node-alive-dead"></span></p>
+                    <p class="info-title">Death date: <span class="info-node node-death-date"></span></p>
                     <p class="info-title">Description: <span class="info-node node-description"></span></p>
-                    <button type="button" class="btn btn-primary" style="background-color: olivedrab" id="btn_close">
-                        Hide the member information
-                    </button>
+
+                    <button type="button" class="btn btn-primary" style="background-color: olivedrab" id="btn_close">Hide the member information</button>
+
                     <div class="btn__actions">
                         <!--Update Node Button-->
-                        <button sec:authorize="hasAnyAuthority('ADMIN')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpdateNodeForm" style="background-color: olivedrab">Update node info</button>
+                        <button sec:authorize="hasAnyAuthority('ADMIN')" id="update_data_node" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpdateNodeForm" style="background-color: olivedrab">Update node info</button>
 
                         <!-- Update Node Modal -->
                         <div class="modal fade" id="modalUpdateNodeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="updateNodeModalLabel">Update Node Date</h5>
+                                        <h5 class="modal-title" id="updateNodeModalLabel">Update Node Data</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
 
-                                    <div class="container-fluid add-node">
+                                    <div class="container-fluid add-node" id="update_form">
 
-                                        <form>
+                                        <form action="#" th:action="@{/updateMember}" method="post">
                                             <div class="form-group">
-                                                <label for="name__for__update" class="sr-only">Name</label>
-                                                <input type="text" class="form-control" id="name__for__update" placeholder="Name">
+                                                <label for="name__for__update">Name</label>
+                                                <input type="text" name="name" class="form-control" id="name__for__update" placeholder="Name">
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="surname__for__update" class="sr-only">Surname</label>
-                                                <input type="text" class="form-control" id="surname__for__update" placeholder="Surname">
+                                                <label for="surname__for__update">Surname</label>
+                                                <input type="text" name="surname" class="form-control" id="surname__for__update" placeholder="Surname">
+                                            </div>
+
+                                            <div th:if="${nodes!=null and !nodes.empty}" class="form-group">
+                                                <label for="parentNamee" class="sr-only">Parent</label>
+                                                <select id="parentNamee" name="parentName" class="form-control">
+                                                    <option selected>Choose Parent</option>
+                                                    <option class="parent_name" th:each="node : ${nodes}"
+                                                            th:value="${node.nodeDetails.name}"
+                                                            th:text="${node.nodeDetails.name}"></option>
+                                                </select>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="birthDate__for__update" class="sr-only">Birth Date</label>
-                                                <input type="date" class="form-control" id="birthDate__for__update">
+                                                <label for="birthPlace__for__update">Birth Place</label>
+                                                <input type="text" name="birthPlace" class="form-control" id="birthPlace__for__update" placeholder="Birth Place">
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="birthPlace__for__update" class="sr-only">Birth Place</label>
-                                                <input type="text" class="form-control" id="birthPlace__for__update" placeholder="Birth Place">
-                                            </div>
-
-                                            <!--<div class="form-group">
-                                                <label for="deathDate" class="sr-only">Death Date</label>
-                                                <input type="date" class="form-control" id="deathDate">
-                                            </div>-->
-
-                                            <div class="form-group">
-                                                <label for="parent" class="sr-only">Parent</label>
-                                                <input type="text" class="form-control" id="parent" placeholder="Parent">
+                                                <label for="birthDate__for__update">Birth Date</label>
+                                                <input type="date" name="birthDate" class="form-control" id="birthDate__for__update">
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="description__for__update" class="sr-only">Description</label>
-                                                <textarea class="form-control rounded-0" id="description__for__update" rows="3" placeholder="..."></textarea>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="isDead" id="dead_for_update" value="true">
+                                                    <label class="form-check-label" for="dead">
+                                                        Dead
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="isDead" id="alive_for_update" value="false" checked>
+                                                    <label class="form-check-label" for="alive">
+                                                        Alive
+                                                    </label>
+                                                </div>
                                             </div>
 
+                                            <div class="form-group deadDate_section">
+                                                <label for="deathDate">Death Date</label>
+                                                <input type="date" name="deadDate" class="form-control" id="deathDate">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label for="description__for__update">Description</label>
+                                                <textarea name="description" class="form-control rounded-0" id="description__for__update" rows="3" placeholder="....."></textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                                                <button type="submit" class="btn btn-primary">Update</button>
+                                            </div>
                                         </form>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
-                                        <button type="button" class="btn btn-primary">Update</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!--Remove button-->
-                        <button sec:authorize="hasAnyAuthority('ADMIN')" type="button" class="btn btn-danger" data-target="#removeModal" data-toggle="modal">Remove Node</button>
+                        <button sec:authorize="hasAnyAuthority('ADMIN')" id="remove-node" type="button" class="btn btn-danger" data-target="#removeModal" data-toggle="modal">Remove Node</button>
 
                         <!-- Remove Modal -->
                         <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -189,12 +213,18 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">
-                                        Are you sure!! Do you want to remove the node and his children?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
-                                        <button type="button" class="btn btn-danger">Delete</button>
+                                    <div class="container-fluid add-node" id="delete_form">
+
+                                        <form action="/delete/" method="get">
+
+                                            <div class="modal-body">
+                                                Are you sure!! Do you want to remove the node, <br> if it has children they're will be also removed?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -202,10 +232,9 @@
                     </div>
                 </div>
             </div>
-            <!--Footer fragment-->
-            <div th:replace="fragments/footer :: footer"></div>
         </div>
-
+        <!--Footer fragment-->
+        <div th:replace="fragments/footer :: footer"></div>
         <script th:src="@{/js/tree.js}" src="/js/tree.js" type="text/javascript"></script>
     </body>
 </html>

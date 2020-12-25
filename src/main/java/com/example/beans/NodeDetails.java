@@ -16,6 +16,9 @@ public class NodeDetails  {
     @Temporal(value = TemporalType.DATE)
     private Date birthDate;
 
+    @Temporal(value = TemporalType.DATE)
+    private Date deadDate;
+
     private String birthPlace;
     private String Description;
     private boolean isDead;
@@ -106,6 +109,28 @@ public class NodeDetails  {
         isDead = dead;
     }
 
+    public Date getDeadDate() {
+        return deadDate;
+    }
+
+    public void setDeadDate(Date deadDate) {
+        this.deadDate = deadDate;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeDetails{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", Surname='" + Surname + '\'' +
+                ", birthDate=" + birthDate +
+                ", deadDate=" + deadDate +
+                ", birthPlace='" + birthPlace + '\'' +
+                ", Description='" + Description + '\'' +
+                ", isDead=" + isDead + '}';
+    }
+
+    /*
     @Override
     public String toString() {
         return "NodeDetails{" +
@@ -117,5 +142,5 @@ public class NodeDetails  {
                 ", Description='" + Description + '\'' +
                 ", isDead=" + isDead +
                 '}';
-    }
+    }*/
 }

@@ -1,3 +1,4 @@
+
 .img-circle{
     margin: 0 auto;
     max-height: 100%;
@@ -18,6 +19,7 @@ p.info-title{
 }
 
 .container-fluid{
+    min-height: 100%;
     margin-top: 25px;
     margin-bottom: 15px;
 }
@@ -50,7 +52,9 @@ p.info-title{
     margin-right: 10px;
     margin-bottom: 15px;
 }
-
+svg{
+    height:auto;
+}
 .btn__add_node{
     margin-bottom: 10px;
     margin-right: 10px
@@ -68,6 +72,10 @@ p.info-title{
 }
 #btn_close{
     margin-bottom: 5px;
+}
+
+.deadDate_section{
+    display: none;
 }
 
 /* On small screens, set height to 'auto' for sidenav and grid */

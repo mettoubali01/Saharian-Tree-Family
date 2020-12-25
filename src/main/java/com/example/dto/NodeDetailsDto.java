@@ -18,6 +18,10 @@ public class NodeDetailsDto {
     private Date birthDate;
 
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date deadDate;
+
+    @NotNull
     private String birthPlace;
 
     @NotNull
@@ -74,4 +78,11 @@ public class NodeDetailsDto {
         this.isDead = isDead;
     }
 
+    public Date getDeadDate() {
+        return deadDate;
+    }
+
+    public void setDeadDate(Date deadDate) {
+        this.deadDate = deadDate;
+    }
 }
