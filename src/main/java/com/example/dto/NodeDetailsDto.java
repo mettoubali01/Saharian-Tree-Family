@@ -2,6 +2,7 @@ package com.example.dto;
 
 import com.sun.istack.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -25,10 +26,21 @@ public class NodeDetailsDto {
     private String birthPlace;
 
     @NotNull
+    private MultipartFile image;
+
+    @NotNull
     private String description;
 
     @NotNull
     private boolean isDead;
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
 
     public String getName() {
         return name;

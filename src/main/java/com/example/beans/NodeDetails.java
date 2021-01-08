@@ -1,6 +1,9 @@
 package com.example.beans;
 
+import org.springframework.security.crypto.codec.Base64;
+
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Date;
 
 @Entity(name = "Node_detail")
@@ -18,6 +21,9 @@ public class NodeDetails  {
 
     @Temporal(value = TemporalType.DATE)
     private Date deadDate;
+
+    @Lob
+    private byte[] image;
 
     private String birthPlace;
     private String Description;
@@ -117,6 +123,14 @@ public class NodeDetails  {
         this.deadDate = deadDate;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "NodeDetails{" +
@@ -129,18 +143,4 @@ public class NodeDetails  {
                 ", Description='" + Description + '\'' +
                 ", isDead=" + isDead + '}';
     }
-
-    /*
-    @Override
-    public String toString() {
-        return "NodeDetails{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", Surname='" + Surname + '\'' +
-                ", birthDate=" + birthDate +
-                ", birthPlace='" + birthPlace + '\'' +
-                ", Description='" + Description + '\'' +
-                ", isDead=" + isDead +
-                '}';
-    }*/
 }

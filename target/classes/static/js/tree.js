@@ -1,8 +1,10 @@
 /*************************************vars****************************************/
-let results = "", api_call_node_detail = "", options = "", currentId = 0, parentName = "";
+api_call_node_detail = "", api_call_image = "", options = "", currentId = 0, parentName = "", res = "", response_image_node = "", image_response = "";
+
 const endpoints = {
     nodes: "http://localhost:8088/nodes/",
-    nodeInfo: "http://localhost:8088/" // add the id of the node
+    nodeInfo: "http://localhost:8088/", // add the id of the node
+    nodeImage: "http://localhost:8088/image/"
 }
 const hrefs = {
     updateNode: "/updateMember/",
@@ -19,12 +21,12 @@ function printChart(nodos, nodosSinTratar) {
         element = document.getElementById("treee");
 
     let chart = new OrgChart(element, {
-        template: "polina",
+        template: "mila",
         mouseScrool: OrgChart.action.none,
         nodeMouseClick: OrgChart.action.none,
         nodeBinding: {
             field_0: "name",
-            img_0: ""
+            img_0: "img"
         },
         nodes: nodos,
     });
@@ -35,20 +37,26 @@ function printChart(nodos, nodosSinTratar) {
         showNodeDetails();
         api_call_node_detail += data.id;
         getParentNameById(nodosSinTratar, data.pid)
-
+        //nodosSinTratar
         getSpecificNodeDetails(nodosSinTratar);
+
     });
 }
 
 //
-async function getSpecificNodeDetails(nodosSinTratar) {
+async function getSpecificNodeDetails(all_nodes) {
 
-    const response_specific_node = await fetch(api_call_node_detail)
+    const response_specific_node = await fetch(api_call_node_detail);
     const data_one_node = await response_specific_node.json();
-    printNodeDetails(data_one_node);
+    let api_coll_node_image = endpoints.nodeImage + data_one_node.nodeDetails.id;
+
+    const response_specific_image_node = await fetch(api_coll_node_image);
+    const image_result = await response_specific_image_node.json();
+
+    printNodeDetails(data_one_node, image_result);
 
     $("#update_data_node").click(function () {
-        printUpdateDataForm(data_one_node);
+        printUpdateDataForm(data_one_node, all_nodes);
     });
 
     $("#remove-node").click(function () {
@@ -56,29 +64,12 @@ async function getSpecificNodeDetails(nodosSinTratar) {
     })
 }
 
-function treatData(data) {
-    if (data.parent === null)
-        results += "[{id : " + data.id + ", name : \"" + data.nodeDetails.name + "\"},";
-    else
-        results += "{id : " + data.id + ", pid : " + data.parent + ", name : \"" + data.nodeDetails.name + "\"},";
-
-    for (let i = 0; i < data.childs.length; i++) {
-        if (data.childs[i].childs.length === 0)
-            results += "{id : " + data.childs[i].id + ", pid : " + data.childs[i].parent + ", name : \"" + data.childs[i].nodeDetails.name + "\"},";
-
-        if (data.childs[i].childs.length > 0) {
-
-            treatData(data.childs[i]);
-        }
-    }
-}
-
-function checkAliveOrDead(){
-    $('input[type=radio][name=isDead]').on('change', function() {
+function checkAliveOrDead() {
+    $('input[type=radio][name=isDead]').on('change', function () {
         if ($(this).val() === "true")
-            $(".deadDate_section").css("display","block")
+            $(".deadDate_section").css("display", "block")
         else
-            $(".deadDate_section").css("display","none")
+            $(".deadDate_section").css("display", "none")
     })
 }
 
@@ -111,26 +102,6 @@ function hideNodeDetails() {
     }
 }
 
-/*
-function printParentNamesAsOptions(data){
-    console.log("Currnet id " + currentId)
-
-    if (data.id !== currentId)
-        options +="<option value=\'" +  data.nodeDetails.name + "\'>"+  data.nodeDetails.name + "<option>";
-        console.log("Id " + data.id)
-    for (let i = 0; i < data.childs.length; i++) {
-        if ( data.childs[i].id !== currentId)
-            continue;
-        if (data.childs[i].childs.length === 0)
-            console.log("Id " + data.childs[i].id)
-            options +="<option value=\'" +  data.childs[i].nodeDetails.name + "\'>"+  data.childs[i].nodeDetails.name + "<option>";
-        if (data.childs[i].childs.length > 0){
-
-            printParentNamesAsOptions(data.childs[i]);
-        }
-    }
-    return options
-}*/
 function deleteNode(data) {
     let hrefDeleteNodeBtn = hrefs.deleteNode + data.id;
     $("#delete_form > form").attr('action', hrefDeleteNodeBtn);
@@ -148,14 +119,82 @@ function getParentNameById(data, id) {
             getParentNameById(data.childs[i], id)
     }
 }
+/*
 
-function printUpdateDataForm(data) {
+async function printOptions(nodes, id_current_node, name) {
+    let parent_detail;
+    if (nodes.parent !== null) {
+
+        let parent_api_call = endpoints.nodeInfo.slice(0, (endpoints.nodeInfo.lastIndexOf('/') + 1));
+        parent_api_call += nodes.parent;
+        let response_parent = await fetch(parent_api_call);
+        parent_detail = await response_parent.json();
+
+        let options = []
+        console.log("length " + options.length)
+        document.querySelectorAll('#parentNameeUpdate > option').forEach((option) => {
+            if (options.includes(option.value)) {
+                option.remove()
+            } else if (option.value !== name) {
+                options.push(option.value)
+            }
+        })
+
+        if (nodes.nodeDetails.name !== name) {
+            // console.log("name nodes " + nodes.parent + " nose  " + nodes.nodeDetails.name + " current name " + name);
+            //var sb = document.querySelector("#parentNameeUpdate > option");
+
+            if (parent_detail !== undefined) {
+                $("#parentNameeUpdate").append($('<option>', {
+                    value: nodes.nodeDetails.name,
+                    text: nodes.nodeDetails.name + " Son of " + parent_detail.nodeDetails.name
+                }));
+            }
+            /!* else {
+                $("#parentNameeUpdate").append($('<option>', {
+                    value: nodes.nodeDetails.id,
+                    text: nodes.nodeDetails.name
+                }));
+            }*!/
+        }
+    } else {
+        $("#parentNameeUpdate").append($('<option>', {
+            value: nodes.nodeDetails.name,
+            text: nodes.nodeDetails.name
+        }));
+    }
+
+    for (let i = 0; i < nodes.childs.length; i++) {
+        printOptions(nodes.childs[i], id_current_node, name)
+    }
+
+    console.log("length " + options.length)
+}
+
+*/
+
+function printUpdateDataForm(data, all_nodes) {
     let actionUpdateForm = hrefs.updateNode + data.id
     $("#update_form > form").attr('action', actionUpdateForm);
     let var_ = "th:if = \"${node.nodeDetails.id} != " + data.id + "\"";
-    $("#update_form form #parentNamee option").attr(var_);
+    //$("#update_form form #parentNamee option").attr(var_);
+    $("#parentNameUpdate");
+    var sb = document.querySelector("#parentNameeUpdate");
+    //removeAll(sb);
 
-    options = "<option selected>Choose your parent</option>";
+    /*var optionValues =[];
+    $('#parentNameeUpdate option').each(function(){
+        if($.inArray(this.value, optionValues) >-1 ){
+            $(this).remove()
+        }else {
+            optionValues.push(this.value);
+        }
+    })
+*/
+    //console.log("name before " + data.nodeDetails.name)
+   // printOptions(all_nodes, data.id, data.nodeDetails.name);
+
+    options = "";
     currentId = data.id
     if (data.nodeDetails.name != null)
         $("#name__for__update").val(data.nodeDetails.name);
@@ -174,8 +213,10 @@ function printUpdateDataForm(data) {
     else
         $("#birthPlace__for__update").val("We don't have this information yet.");
 
-    if (data.parent !== null)
-        $("#parent__for_update").val(data.parent);
+    if (data.parent !== null) {
+       // console.log("id for rlement " + data.id + " name " + data.nodeDetails.name)
+        $('#parentNameeUpdate option[value="' + data.id + '"]').hide();
+    }
     else
         $("#parent__for_update").val(data.nodeDetails.name + " is the root of the Tree.");
     if (data.nodeDetails.description != null)
@@ -184,7 +225,8 @@ function printUpdateDataForm(data) {
         $("#description__for__update").val("We don't have this information yet.");
 }
 
-function printNodeDetails(data) {
+function printNodeDetails(data, image_data) {
+
     if (data.nodeDetails.name != null)
         $(".node-name").text(data.nodeDetails.name);
     else
@@ -201,12 +243,14 @@ function printNodeDetails(data) {
         $(".node-birth-place").text(data.nodeDetails.birthPlace);
     else
         $(".node-birth-place").text("We don't have this information yet.");
-
-    if (data.nodeDetails.deadDate != null){
+    if (image_data.image.length > 4) {
+        $("#thumbnail").attr('src', image_data.image);
+    } else
+        $("#thumbnail").attr('src', "http://localhost:8088/images/profile_image.png");
+    if (data.nodeDetails.deadDate != null) {
         $(".node-alive-dead").text("No");
         $(".node-death-date").text(data.nodeDetails.deadDate);
-        //$(".node-death-date").text(data.nodeDetails.deadDate);
-    }else{
+    } else {
         $(".node-alive-dead").text("Yes");
         $(".node-death-date").text("---");
     }
@@ -220,16 +264,58 @@ function printNodeDetails(data) {
         $(".node-description").text("We don't have this information yet.");
 }
 
+async function editImg(data) {
+    try {
+        api_call_image = endpoints.nodeImage + data.nodeDetails.id;
+        response_image_node = await fetch(api_call_image);
+        image_response = await response_image_node.json();
+        let api_call_node = '', response_node = '', node_detail = '';
+
+        if (data.parent !== null) {
+            api_call_node = endpoints.nodeInfo.slice(0, (endpoints.nodeInfo.lastIndexOf('/') + 1));
+            api_call_node += data.parent;
+            response_node = await fetch(api_call_node);
+            node_detail = await response_node.json();
+        } else {
+            api_call_node = endpoints.nodeInfo.slice(0, (endpoints.nodeInfo.lastIndexOf('/') + 1));
+            api_call_node += data.id;
+            response_node = await fetch(api_call_node);
+            node_detail = await response_node.json();
+        }
+
+        if (image_response.image.length > 4) {
+            if (data.parent === null)
+                res += "[{id : " + data.id + ", name : \"" + data.nodeDetails.name + "\", img : \"" + image_response.image + "\"},";
+            else
+                res += "{id : " + data.id + ", pid : " + data.parent + ", name : \"" + data.nodeDetails.name + " Son of " + node_detail.nodeDetails.name + " \", img :\"" + image_response.image + "\"},";
+        } else {
+            if (data.parent === null)
+                res += "[{id : " + data.id + ", name : \"" + data.nodeDetails.name + "\", img : \"http://localhost:8088/images/profile_image.png\"},";
+            else
+                res += "{id : " + data.id + ", pid : " + data.parent + ", name : \"" + data.nodeDetails.name + " Son of " + node_detail.nodeDetails.name + " \", img : \"http://localhost:8088/images/profile_image.png\"},";
+        }
+        for (let i = 0; i < data.childs.length; i++) {
+            await editImg(data.childs[i]);
+        }
+        return res;
+    } catch (error) {
+        console.log('Error fetching and parsing data', error);
+    }
+}
+
 //main
 async function main() {
 
     const response_nodes = await fetch(endpoints.nodes)
     const all_nodes = await response_nodes.json();
-    treatData(all_nodes);
-    results = results.slice(0, -1);
-    results += "]";
+    let treated_data = await editImg(all_nodes)
+    treated_data = treated_data.slice(0, -1);
+    treated_data += "]";
+    console.log("********")
+    console.log(treated_data)
+
     hideNodeDetails();
-    printChart(eval(results), all_nodes);
+    printChart(eval(treated_data), all_nodes);
     checkAliveOrDead()
 }
 

@@ -9,3 +9,7 @@ footer.jumbotron .row .center__side{
     border-left: solid;
     border-right: solid;
 }
+
+footer{
+    color: white;
+}

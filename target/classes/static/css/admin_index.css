@@ -1,4 +1,3 @@
-
 .img-circle{
     margin: 0 auto;
     max-height: 100%;
@@ -62,11 +61,13 @@ svg{
 
 /* Set gray background color and 100% height */
 .sidenav {
-    /*
-    padding-top: 10px;
-    */
     box-sizing: content-box;
 }
+
+#thumbnail{
+    border-radius: 50%;
+}
+
 #sidenav{
     display: none;
 }

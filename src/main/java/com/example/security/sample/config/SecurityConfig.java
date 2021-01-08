@@ -53,6 +53,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
+                .permitAll();http.authorizeRequests()
+                .antMatchers("/admin").hasAuthority("ADMIN")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .failureUrl("/login?error")
+                .permitAll()
+                .and()
+                .logout()
                 .permitAll();
     }
 }

@@ -23,10 +23,11 @@
 
         <div class="container-fluid">
             <div class="row content">
+                <!---->
                 <div sec:authorize="hasAnyAuthority('ADMIN')" class="jumbotron col-sm-2 sidenav" id="sidenava">
                     <fieldset>
-                        <legend>Add new Member</legend>
-                        <form action="#" th:action="@{/addMember}" method="post">
+                        <legend style="font-weight: bold">Add new Member</legend>
+                        <form action="#" th:action="@{/addMember}" method="post" enctype="multipart/form-data">
                             <div th:if="${param.error}">
                                 <div class="alert alert-danger">
                                   Error.</div>
@@ -44,10 +45,11 @@
                                 <label for="parentName" class="sr-only">Parent</label>
                                 <select id="parentName" name="parentName" class="form-control">
                                     <option selected>Choose Parent</option>
-                                    <option th:each="node : ${nodes}"
-                                            th:value="${node.nodeDetails.name}"
-                                            th:text="${node.nodeDetails.name}"></option>
+                                    <option class="parent_name" th:each="node : ${nodess}"
+                                            th:value="${node.key}"
+                                            th:text="${node.value}"></option>
                                 </select>
+
                             </div>
 
                             <div class="form-group">
@@ -89,6 +91,12 @@
                                     </label>
                                 </div>
                             </div>
+
+                            <div class="custom-file">
+                                <label class="custom-file-label" for="image" data-browse="{Browse}"></label>
+                                <input type="file" class="custom-file-input" name="image" id="image" accept="image/png, image/jpeg, image/jfif, image/jpg">
+                            </div>
+
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea id="description" name="description" class="form-control" placeholder="......" rows="3"></textarea>
@@ -104,8 +112,8 @@
                     <div id="treee"></div>
                 </div>
                 <div class="jumbotron col-sm-2 sidenav" id="sidenav">
-
-                    <img th:src="@{/images/profile_image.png}" class="img-circle" alt="profile image"/>
+                    <!--//th:src="@{/images/profile_image.png}-->
+                    <img class="img-circle" id="thumbnail" alt="profile image"/>
                     <p class="info-title">Name: <span class="info-node node-name"></span></p>
                     <p class="info-title">Surname: <span class="info-node node-surname"></span></p>
                     <p class="info-title">Parent name: <span class="info-node node-parent-name"></span></p>
@@ -118,7 +126,7 @@
                     <button type="button" class="btn btn-primary" style="background-color: olivedrab" id="btn_close">Hide the member information</button>
 
                     <div class="btn__actions">
-                        <!--Update Node Button-->
+                        <!--Update Node Button -->
                         <button sec:authorize="hasAnyAuthority('ADMIN')" id="update_data_node" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpdateNodeForm" style="background-color: olivedrab">Update node info</button>
 
                         <!-- Update Node Modal -->
@@ -134,7 +142,7 @@
 
                                     <div class="container-fluid add-node" id="update_form">
 
-                                        <form action="#" th:action="@{/updateMember}" method="post">
+                                        <form action="#" th:action="@{/updateMember}" method="post" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <label for="name__for__update">Name</label>
                                                 <input type="text" name="name" class="form-control" id="name__for__update" placeholder="Name">
@@ -146,12 +154,12 @@
                                             </div>
 
                                             <div th:if="${nodes!=null and !nodes.empty}" class="form-group">
-                                                <label for="parentNamee" class="sr-only">Parent</label>
-                                                <select id="parentNamee" name="parentName" class="form-control">
-                                                    <option selected>Choose Parent</option>
-                                                    <option class="parent_name" th:each="node : ${nodes}"
-                                                            th:value="${node.nodeDetails.name}"
-                                                            th:text="${node.nodeDetails.name}"></option>
+                                                <label for="parentNameeUpdate" class="sr-only">Parent</label>
+                                                <select id="parentNameeUpdate" name="parentName" class="form-control">
+                                                    <option selected>Choose your parent</option>
+                                                    <option class="parent_name" th:each="node : ${nodess}"
+                                                            th:value="${node.key}"
+                                                            th:text="${node.value}"></option>
                                                 </select>
                                             </div>
 
@@ -185,6 +193,10 @@
                                                 <input type="date" name="deadDate" class="form-control" id="deathDate">
                                             </div>
 
+                                            <div class="custom-file">
+                                                <label class="custom-file-label" for="imageUpdate" data-browse="{Browse}"></label>
+                                                <input type="file" class="custom-file-input" name="image" id="imageUpdate" accept="image/png, image/jpeg, image/jfif, image/jpg">
+                                            </div>
 
                                             <div class="form-group">
                                                 <label for="description__for__update">Description</label>

@@ -11,6 +11,20 @@ public class NodeDetailsController {
     @Autowired
     NodeDetailsService nodeDetailsService;
 
+    @RequestMapping("/image/{id}")
+    @ResponseBody
+    public String getImageByid(@PathVariable int id){
+        String image = nodeDetailsService.getImageById(id);
+        return "{\"image\":\""+ image + "\"}";
+    }
+
+    @RequestMapping("/name/{id}")
+    @ResponseBody
+    public String getNameById(@PathVariable int id){
+        String name = nodeDetailsService.getNameById(id);
+        return "{\"name\":\""+ name + "\"}";
+    }
+
     @PostMapping("/person/save")
     public NodeDetails savePerson(@RequestBody NodeDetails person){
         return nodeDetailsService.addNodeDetails(person);
@@ -30,11 +44,6 @@ public class NodeDetailsController {
     public List<NodeDetails> getAllPersons(){
         return nodeDetailsService.getNodeDetails();
     }
-
-    @GetMapping("/persons/{name}")
-    /*public List<NodeDetails> getPersonByName(@PathVariable String name) {
-        return nodeDetailsService.getPersonbyName(name);
-    }*/
 
     @DeleteMapping("/person/rm")
     public String rmPerson(@RequestParam int id) {
