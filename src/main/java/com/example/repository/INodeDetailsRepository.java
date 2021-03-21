@@ -18,6 +18,7 @@ public interface INodeDetailsRepository extends JpaRepository<NodeDetails, Integ
     @Query("select n.name, n.image from Node_detail n")
     List<String> findAllImageWName();
 
+    //inner join r.rel
     @Query("select n.name from Node_detail n where n.id = ?1")
     String getNodeNameById(int id);
 }

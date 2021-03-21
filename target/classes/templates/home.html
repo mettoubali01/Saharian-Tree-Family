@@ -4,15 +4,17 @@
       xmlns:th = "http://thymeleaf.org"
       xmlns:sec = "http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
+        <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.4.4.min.js" th:src="@{https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.4.4.min.js}"></script>
         <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js}" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js}" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js}" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script th:src="@{/js/orgchart.js}" src="/js/orgchart.js" type="text/javascript"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" th:href="@{https://use.fontawesome.com/releases/v5.7.0/css/all.css}" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}">
+
         <link th:href="@{/css/header.css}" href="/css/header.css" rel="stylesheet" type="text/css"/>
         <link th:href="@{/css/foote.css}" href="/css/foote.css" rel="stylesheet" type="text/css"/>
         <link th:href="@{/css/admin_index.css}" href="/css/admin_index.css" rel="stylesheet" type="text/css"/>
+
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta charset="UTF-8">
         <title th:text="${page_title}"></title>
@@ -23,22 +25,25 @@
 
         <div class="container-fluid">
             <div class="row content">
-                <!---->
                 <div sec:authorize="hasAnyAuthority('ADMIN')" class="jumbotron col-sm-2 sidenav" id="sidenava">
                     <fieldset>
                         <legend style="font-weight: bold">Add new Member</legend>
-                        <form action="#" th:action="@{/addMember}" method="post" enctype="multipart/form-data">
-                            <div th:if="${param.error}">
-                                <div class="alert alert-danger">
-                                  Error.</div>
-                            </div>
+                        <form action="#"
+                              th:action="@{/addMember}"
+                              th:object="${nodeDetailsDto}"
+                              method="post"
+                              enctype="multipart/form-data">
+
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input id="name" name="name" class="form-control" type="text" placeholder="Bachir"/>
+                                <input id="name" name="name" th:classappend="${#fields.hasErrors('name')} ? 'input-icon right': ''" th:field="*{name}" class="form-control" type="text" placeholder="Bachir"/>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
                             </div>
                             <div class="form-group">
                                 <label for="surname">Surname</label>
-                                <input id="surname" name="surname" class="form-control" type="text" placeholder="Ettoubali"/>
+                                <input id="surname" name="surname" th:classappend="${#fields.hasErrors('surname')} ? 'input-icon right': ''" th:field="*{surname}" class="form-control" type="text" placeholder="Ettoubali"/>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
                             </div>
 
                             <div th:if="${nodes!=null and !nodes.empty}" class="form-group">
@@ -49,18 +54,18 @@
                                             th:value="${node.key}"
                                             th:text="${node.value}"></option>
                                 </select>
-
                             </div>
 
                             <div class="form-group">
                                 <label for="birthPlace">Birth Place</label>
-                                <input id="birthPlace" name="birthPlace" class="form-control" type="text" placeholder="Layun"/>
-
+                                <input id="birthPlace" name="birthPlace"  th:classappend="${#fields.hasErrors('birthPlace')} ? 'input-icon right': ''" th:field="*{birthPlace}" class="form-control" type="text" placeholder="Layun"/>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('birthPlace')}" th:errors="*{birthPlace}"></div>
                             </div>
 
                             <div class="form-group">
                                 <label for="birthDate">Birth Date</label>
-                                <input id="birthDate" name="birthDate" class="form-control" type="date" value=""/>
+                                <input id="birthDate" name="birthDate"  th:classappend="${#fields.hasErrors('birthDate')} ? 'input-icon right': ''" th:field="*{birthDate}" class="form-control" type="date"/>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
                             </div>
 
                             <div class="form-group">
@@ -83,15 +88,6 @@
                                 <input id="deadDate" name="deadDate" class="form-control" type="date"/>
                             </div>
 
-                            <div  th:if="${counted_root_node == 0 }" class="form-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="isRoot" id="isRoot" value="true" checked>
-                                    <label class="form-check-label" for="IsRoot">
-                                        Root
-                                    </label>
-                                </div>
-                            </div>
-
                             <div class="custom-file">
                                 <label class="custom-file-label" for="image" data-browse="{Browse}"></label>
                                 <input type="file" class="custom-file-input" name="image" id="image" accept="image/png, image/jpeg, image/jfif, image/jpg">
@@ -99,7 +95,8 @@
 
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea id="description" name="description" class="form-control" placeholder="......" rows="3"></textarea>
+                                <textarea id="description" name="description" th:classappend="${#fields.hasErrors('description')} ? 'input-icon right': ''" th:field="*{description}" class="form-control" placeholder="......" rows="3"></textarea>
+                                <div class="alert alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                             </div>
                             <button type="submit" class="btn btn-primary">Add</button>
                         </form>
@@ -108,54 +105,51 @@
                 <div sec:authorize="isAnonymous()" class="col-sm-12 d-flex justify-content-center" id="container-tree">
                     <div id="tree"></div>
                 </div>
-                <div sec:authorize="isAuthenticated()" class="col-sm-9 justify-content-center" id="container-treee">
+                <div sec:authorize="isAuthenticated" class="col-sm-9 justify-content-center" id="container-treee">
                     <div id="treee"></div>
                 </div>
                 <div class="jumbotron col-sm-2 sidenav" id="sidenav">
-                    <!--//th:src="@{/images/profile_image.png}-->
                     <img class="img-circle" id="thumbnail" alt="profile image"/>
                     <p class="info-title">Name: <span class="info-node node-name"></span></p>
                     <p class="info-title">Surname: <span class="info-node node-surname"></span></p>
                     <p class="info-title">Parent name: <span class="info-node node-parent-name"></span></p>
-                    <p class="info-title">Birth date: <span class="info-node node-birth-date"></span></p>
-                    <p class="info-title">Birth place: <span class="info-node node-birth-place"></span></p>
+                    <p class="info-title">Birth date: <span class="info-node node-birthDate"></span></p>
+                    <p class="info-title">Birth place: <span class="info-node node-birthPlace"></span></p>
                     <p class="info-title">Alive: <span class="info-node node-alive-dead"></span></p>
-                    <p class="info-title">Death date: <span class="info-node node-death-date"></span></p>
+                    <p class="info-title">Death date: <span class="info-node node-deadDate"></span></p>
                     <p class="info-title">Description: <span class="info-node node-description"></span></p>
 
                     <button type="button" class="btn btn-primary" style="background-color: olivedrab" id="btn_close">Hide the member information</button>
 
                     <div class="btn__actions">
-                        <!--Update Node Button -->
+                        <!--Update Node Button   -->
                         <button sec:authorize="hasAnyAuthority('ADMIN')" id="update_data_node" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpdateNodeForm" style="background-color: olivedrab">Update node info</button>
-
                         <!-- Update Node Modal -->
                         <div class="modal fade" id="modalUpdateNodeForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="updateNodeModalLabel">Update Node Data</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
 
                                     <div class="container-fluid add-node" id="update_form">
-
-                                        <form action="#" th:action="@{/updateMember}" method="post" enctype="multipart/form-data">
+                                        <form method="post" enctype="multipart/form-data" th:action="@{/updateMember}" id="updateModalForm">
                                             <div class="form-group">
                                                 <label for="name__for__update">Name</label>
-                                                <input type="text" name="name" class="form-control" id="name__for__update" placeholder="Name">
+                                                <input type="text" name="name" class="form-control" id="name__for__update" placeholder="Name" required>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="surname__for__update">Surname</label>
-                                                <input type="text" name="surname" class="form-control" id="surname__for__update" placeholder="Surname">
+                                                <input type="text" name="surname" class="form-control" id="surname__for__update" placeholder="Surname" required>
                                             </div>
 
-                                            <div th:if="${nodes!=null and !nodes.empty}" class="form-group">
-                                                <label for="parentNameeUpdate" class="sr-only">Parent</label>
-                                                <select id="parentNameeUpdate" name="parentName" class="form-control">
+                                            <div th:if="${nodes!=null and !nodes.empty}" class="form-group parent__name">
+                                                <label for="parentName" class="sr-only">Parent</label>
+                                                <select id="parentNameUpdate" name="parentName" class="form-control">
                                                     <option selected>Choose your parent</option>
                                                     <option class="parent_name" th:each="node : ${nodess}"
                                                             th:value="${node.key}"
@@ -165,7 +159,7 @@
 
                                             <div class="form-group">
                                                 <label for="birthPlace__for__update">Birth Place</label>
-                                                <input type="text" name="birthPlace" class="form-control" id="birthPlace__for__update" placeholder="Birth Place">
+                                                <input type="text" name="birthPlace" class="form-control" id="birthPlace__for__update" placeholder="Birth Place" required>
                                             </div>
 
                                             <div class="form-group">
@@ -175,7 +169,7 @@
 
                                             <div class="form-group">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="isDead" id="dead_for_update" value="true">
+                                                    <input class="form-check-input" type="radio" name="isDead" id="dead_for_update" value="true" required>
                                                     <label class="form-check-label" for="dead">
                                                         Dead
                                                     </label>
@@ -227,7 +221,7 @@
                                     </div>
                                     <div class="container-fluid add-node" id="delete_form">
 
-                                        <form action="/delete/" method="get">
+                                        <form action="/delete/" method="get" id="remove_node">
 
                                             <div class="modal-body">
                                                 Are you sure!! Do you want to remove the node, <br> if it has children they're will be also removed?
@@ -247,6 +241,10 @@
         </div>
         <!--Footer fragment-->
         <div th:replace="fragments/footer :: footer"></div>
-        <script th:src="@{/js/tree.js}" src="/js/tree.js" type="text/javascript"></script>
+
+        <script src="/js/main_page_controller.js" type="text/javascript"></script>
+        <script src="/js/tree_chart.js" type="text/javascript"></script>
+        <script src="/js/validate_update_form.js" type="text/javascript"></script>
+        <script src="/js/orgchart/orgchart.js" type="text/javascript"></script>
     </body>
 </html>

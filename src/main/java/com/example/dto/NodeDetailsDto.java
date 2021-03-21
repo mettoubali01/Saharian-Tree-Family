@@ -4,34 +4,35 @@ import com.sun.istack.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.*;
 import java.util.Date;
 
 public class NodeDetailsDto {
 
-    @NotNull
+    @NotEmpty(message = "First name field should not be empty")
+    @Size(min = 3, message = "First name must be a minimum of 3 characters")
     private String name;
 
-    @NotNull
+    @NotEmpty(message = "Surname field should not be empty")
+    @Size(min = 3, message = "Surname must be a minimum of 3 characters")
     private String surname;
 
-    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
 
-    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deadDate;
 
-    @NotNull
+    @NotEmpty(message = "Surname field should not be empty")
+    @Size(min = 3, message = "Birth place must be a minimum of 3 characters")
     private String birthPlace;
 
-    @NotNull
     private MultipartFile image;
 
-    @NotNull
+    @NotEmpty(message = "Surname field should not be empty")
+    @Size(min = 5, message = "Description must be a minimum of 5 characters")
     private String description;
 
-    @NotNull
     private boolean isDead;
 
     public MultipartFile getImage() {

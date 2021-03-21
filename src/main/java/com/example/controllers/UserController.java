@@ -1,4 +1,4 @@
-package com.example.Controllers;
+package com.example.controllers;
 
 import com.example.beans.User;
 import com.example.service.UserService;

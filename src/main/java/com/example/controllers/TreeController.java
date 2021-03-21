@@ -1,8 +1,7 @@
-package com.example.Controllers;
+package com.example.controllers;
 
 import com.example.beans.Tree;
 import com.example.service.ITreeService;
-import org.hibernate.annotations.common.reflection.XMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URLConnection;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -20,27 +21,24 @@ public class NodeDetailsService implements INodeDetailsService {
 
     public void getAllImages(){
         List<String> images = iNodeDetailsRepository.findAllImageWName();
-        System.out.println("consulta a ala imagen " + images);
+        System.out.println("consulta las imagenes " + images);
     }
 
     public String getImageById(int id){
         byte[] image = iNodeDetailsRepository.findImageById(id);
         if (image != null) {
 
-            System.out.println(image);
+            System.out.println(Arrays.toString(image));
             String contentType = null;
             try {
                 contentType = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(image));
             } catch (IOException e) {
                 e.getMessage();
             }
-            System.out.println("to say " + contentType);
 
             String path = "data:" + contentType + ";base64," + Base64.getEncoder().encodeToString(image);
-            if (path != null)
-                return path;
-            else
-                return "";
+
+            return path;
         }else
             return null;
     }
@@ -60,7 +58,7 @@ public class NodeDetailsService implements INodeDetailsService {
     }
 
     @Override
-    public NodeDetails updateNodeDatails(NodeDetails nodeDetails) {
+    public NodeDetails updateNodeDetails(NodeDetails nodeDetails) {
         iNodeDetailsRepository.save(nodeDetails);
         return nodeDetails;
     }
@@ -71,13 +69,17 @@ public class NodeDetailsService implements INodeDetailsService {
     }
 
     @Override
-    public NodeDetails getNodeDetailsbyName(String name) {
+    public NodeDetails getNodeDetailsByName(String name) {
         return iNodeDetailsRepository.findNodeDetailsByName(name);
     }
 
     @Override
     public NodeDetails findById(long id) {
-        return iNodeDetailsRepository.findById((int)id).orElse(null);
+
+        NodeDetails nodeDetails = iNodeDetailsRepository.findById((int)id).orElse(null);
+        System.out.println("NodeDetails " + nodeDetails);
+
+        return nodeDetails;
     }
 
     @Override

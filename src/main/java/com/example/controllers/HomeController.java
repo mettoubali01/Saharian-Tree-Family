@@ -1,4 +1,4 @@
-package com.example.Controllers;
+package com.example.controllers;
 
 import com.example.beans.NodeDetails;
 import com.example.beans.Tree;
@@ -20,11 +20,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URLConnection;
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -45,7 +45,7 @@ public class HomeController {
     private ModelMapper modelMapper;
 
     @GetMapping("/")
-    public String getHome(Model model, Principal principal) throws IOException {
+    public String getHome(Model model, NodeDetailsDto nodeDetailsDto) throws IOException {
         nodeDetailsService.getAllImages();
         nodeService.getNameNodeWNameParent().entrySet().stream()
                 .forEach(e -> System.out.println(e.getKey() + ":" + e.getValue()));
@@ -59,15 +59,24 @@ public class HomeController {
 
     @PostMapping("/addMember")
     public String addNewMember(@Valid NodeDetailsDto nodeDetailsDto,
-                               @Valid ParentDto parentDto,
                                BindingResult bindingResult,
-                               @RequestParam(value = "image") MultipartFile multipartFile) throws IOException {
+                               ParentDto parentDto) throws IOException {
+
+        if (bindingResult.hasErrors()) {
+            System.out.println("Errores del form ");
+            return "home";
+        }
+
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.searchUserByEmail("mohamed@mohamed.com");
+        User user = userService.searchUserByEmail(email);
         Tree tree = treeService.getTreeByName("Ettoubali");
 
         // related with the parent
-        Node parent = nodeService.getNodeById(Integer.parseInt(parentDto.getParentName())).get();
+        Node parent = null;
+        if (parentDto.getParentName() != null) {
+            parent = nodeService.getNodeById(Integer.parseInt(parentDto.getParentName())).get();
+        }
+
         NodeDetails nodeDetails = modelMapper.map(nodeDetailsDto, NodeDetails.class);
         nodeDetails.setImage(nodeDetailsDto.getImage().getBytes());
         Node node = new Node();
@@ -79,25 +88,29 @@ public class HomeController {
         else
             node.setRoot(false);
         node.setParent(parent);
+
+        //saving the node
         nodeService.saveNode(node);
 
-        if (bindingResult.hasErrors()) {
-            System.out.println("Errores del form " + bindingResult.getFieldErrors());
-        }
         return "redirect:/";
     }
 
     @PostMapping("/updateMember/{id}")
     public String updateMember(@Valid NodeDetailsDto nodeDetailsDto,
-                               @Valid ParentDto parentDto,
                                BindingResult bindingResult,
-                               @PathVariable int id,
-                               @RequestParam("image") MultipartFile multipartFile) throws IOException {
-        String filename = multipartFile.getOriginalFilename();
+                               @Valid ParentDto parentDto,
+                               @PathVariable int id) throws IOException {
+
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.searchUserByEmail("mohamed@mohamed.com");
+        User user = userService.searchUserByEmail(email);
         Tree tree = treeService.getTreeByName("Ettoubali");
-        Node parent = nodeService.getNodeById(Integer.parseInt(parentDto.getParentName())).get();
+
+        Node parent = null;
+        if (parentDto.getParentName() != null && !parentDto.getParentName().equals("Choose your parent")) {
+            parent = nodeService.getNodeById(Integer.parseInt(parentDto.getParentName())).get();
+            System.out.println("sasas===>>> " + parentDto.getParentName());
+
+        }
         NodeDetails nodeDetails = modelMapper.map(nodeDetailsDto, NodeDetails.class);
         Node node = nodeService.getNodeById(id).get();
         node.getNodeDetails().setImage(nodeDetailsDto.getImage().getBytes());
@@ -119,46 +132,15 @@ public class HomeController {
 
         if (bindingResult.hasErrors()) {
             System.out.println("Errores del form " + bindingResult.getFieldErrors());
+            return "home";
         }
         return "redirect:/";
-    }
-
-    @GetMapping("/node/children/{id}")
-    public List<Node> getChildrenNode(@PathVariable int id){
-        Optional<Node> node = getNodeById(id);
-
-        return node.get().getChilds();
-    }
-
-    @PutMapping("/addChildNode")
-    public Node addNodeAsChild(@RequestBody Node node, @PathVariable int id, @PathVariable int userId){
-        Node parent = nodeService.getNodeById(id).get();
-        node.setParent(parent);
-        node.getNodeDetails().setNode(node);
-        return nodeService.saveNode(node);
-    }
-
-    @PutMapping("/Update")
-    public Node updatePerson(@RequestBody Node node){
-        return nodeService.updateNode(node);
-    }
-
-    @GetMapping("/{id}")
-    @ResponseBody
-    public Optional<Node> getNodeById(@PathVariable int id){
-        return nodeService.getNodeById(id);
-    }
-
-    @GetMapping("/nodes")
-    @ResponseBody
-    public Node getNodes() {
-        return nodeService.getAllNodes().get(0);
     }
 
     @GetMapping("/delete/{id}")
     @Transactional
     public String rmNodeById(@PathVariable int id) {
-        Optional<Node> node = getNodeById(id);
+        Optional<Node> node = nodeService.getNodeById(id);
         if (node.isPresent()) {
             if (node.get().getChilds().size() > 0) {
                 ArrayList<Integer> a = nodeService.getIds(id);
@@ -175,4 +157,18 @@ public class HomeController {
         }
         return "redirect:/";
     }
+
+    @PutMapping("/addChildNode")
+    public Node addNodeAsChild(@RequestBody Node node, @PathVariable int id){
+        Node parent = nodeService.getNodeById(id).get();
+        node.setParent(parent);
+        node.getNodeDetails().setNode(node);
+        return nodeService.saveNode(node);
+    }
+
+    @PutMapping("/Update")
+    public Node updatePerson(@RequestBody Node node){
+        return nodeService.updateNode(node);
+    }
+
 }

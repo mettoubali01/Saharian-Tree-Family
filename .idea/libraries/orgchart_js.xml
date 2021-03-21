@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="orgchart.js" type="javaScript">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/src/main/resources/static/js/orgchart.js" />
+      <root url="file://$PROJECT_DIR$/src/main/resources/static/js/orgchart/orgchart.js" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

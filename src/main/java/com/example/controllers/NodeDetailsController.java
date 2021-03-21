@@ -1,4 +1,4 @@
-package com.example.Controllers;
+package com.example.controllers;
 
 import com.example.beans.NodeDetails;
 import com.example.service.NodeDetailsService;
@@ -32,11 +32,12 @@ public class NodeDetailsController {
 
     @PutMapping("/person/update")
     public NodeDetails updatePerson(@RequestBody NodeDetails person){
-        return nodeDetailsService.updateNodeDatails(person);
+        return nodeDetailsService.updateNodeDetails(person);
     }
 
-    @GetMapping("/person/{id}")
-    public NodeDetails getPersonById(@PathVariable long id){
+    @GetMapping("/nodeDetails/{id}")
+    public NodeDetails getNodeDetailsBy(@PathVariable long id){
+        System.out.println("Id " + id);
         return nodeDetailsService.findById(id);
     }
 
